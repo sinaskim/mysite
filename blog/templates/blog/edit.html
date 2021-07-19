@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %} <!--base.html을 상속한다.-->
+
+{% block content %}
+<section class="content-section bg-light" id="about">
+    <div class="container px-4 px-lg-5 text-center">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-10">
+                <h2>오늘의 일기를 여기다가 작성해보세요!</h2> 
+                <p class="lead mb-5">                           
+                    <form method ="POST"> <!--입력받는 방식은 POST이다.-->
+                        {% csrf_token %} <!--보안상을 위해 써주는 코드-->
+                        <table>
+                            {{form.as_table}} <!--form.as_table을 띄운다.-->
+                        </table>
+                        <button class="btn btn-dark btn-xl" type="submit">수정하기</button> <!--제출 type의 버튼을 만들어 수정기능을 만든다.-->
+                    </form>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

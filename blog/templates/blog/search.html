@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %} <!--base.html을 상속한다.-->
+ 
+{% block content%} 
+<section class="content-section bg-light" id="about">
+    <div class="container px-4 px-lg-5 text-center">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-10">
+                <h1>{{ hashtag }}가 있는 게시글 목록</h1>
+                <span>해시태그 검색결과 페이지 입니다.</span>
+            </div>
+            {% for post in hashtag.blog_set.all %}
+                <a href="{% url 'detail' post.id %}">
+                    <h2>{{post.title}}</h2>
+
+                    <h3>{{post.summary}}</h3>
+                </a>
+                <p>{{post.pub_date}}</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

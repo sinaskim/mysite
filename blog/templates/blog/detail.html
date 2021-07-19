@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %} <!--base.html의 내용을 상속한다.-->
+{% block content %} <!--base.html에 선언된 block content에 이 내용을 덮어씌운다.-->
+    <h2>제목 : {{post.title}}</h2> <!--제목은 post.title로 정한다.-->
+    <p>작성 일자 및 시간 :{{ post.pub_date }}</p> <!--작성 일자 및 시간에 post.pub_date로 설정-->
+    <p>글쓴이 : {{post.writer}}</p> <!--글쓴이는 post.wirter로 정한다.-->
+    <p>내용 : {{post.content}}</p> <!--내용은 post의 content로 정한다.-->
+
+    {% if post.image %}
+        <img src="{{post.image.url}}" width="250" height="250" alt="Card image cap">
+    {% endif%}
+    <p></p>
+    {% for hashtag in post.hashtags.all %}
+        {{hashtag.name}}
+    {% endfor %}
+    
+    <p></p>
+    <a href="{% url 'edit' post.id %}">수정하기</a> <!--버튼을 만들어 하이퍼링크를 지정해준다. edit으로 연결되는 버튼-->
+    <a href="{% url 'delete' post.id %}">삭제하기</a> <!--버튼을 만들어 delete기능을 지정해준다. delete으로 연결되는 버튼-->
+    {% for comment in post.comments.all %}
+        <p>{{comment.text}}</p>
+    {% endfor %}
+    <p></p>
+    <form method = "POST" action="{% url 'detail' post.id %}">
+        {%csrf_token%}
+        <p>{{form.as_p}}</p>
+        <input type="submit" value  ="submit">
+    </form>
+{% endblock %} <!--여기서 block을 끝낸다-->
