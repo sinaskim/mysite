@@ -6,7 +6,12 @@ from django.utils import timezone #시간을 이용하기 위해 django.utils에
 from django.http import request,HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+from .models import Bookmark
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView,DeleteView,UpdateView
 # Create your views here.
 def base(request): #함수 base를 선언
     return render(request, 'blog/base.html') #render을 이용하여 blog/base.html을 띄운다.
@@ -107,3 +112,25 @@ def video_like(request):
     
     context = {'likes_count': video.count_likes_user(), 'message': message}
     return HttpResponse(json.dumps(context), content_type="application/json")
+
+class BookmarkListView(ListView):
+    model = Bookmark
+    
+class BookmarkCreateView(CreateView):
+    model = Bookmark
+    fields = ['site_name','url']
+    success_url = reverse_lazy('bookmark_list')
+    template_name_suffix = '_create'
+
+class BookmarkDetailView(DetailView):
+    model = Bookmark 
+
+class BookmarkUpdateView(UpdateView):
+    model = Bookmark
+    fields = ['site_name', 'url']
+    template_name_suffix = '_update'
+    success_url = reverse_lazy('bookmark_list')
+
+class BookmarkDeleteView(DeleteView):
+    model = Bookmark
+    success_url = reverse_lazy('bookmark_list')

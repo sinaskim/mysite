@@ -1,5 +1,6 @@
 from django.db import models # django.db로부터 models를 불러와라
-from django.conf import settings # django.conf로부터 settings를 불러와라
+from django.conf import settings
+from django.views.generic.detail import DetailView # django.conf로부터 settings를 불러와라
 # Create your models here.
 
 class Blog(models.Model): #클래스 Blog 선언
@@ -32,4 +33,11 @@ class Hashtag(models.Model):
 
     def __str__(self):
         return self.name
+
+class Bookmark(models.Model):
+    site_name =models.CharField(max_length=50)
+    url=models.URLField()
+
+    def __str__(self):
+        return self.site_name + "-" +self.url
 

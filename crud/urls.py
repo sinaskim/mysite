@@ -32,4 +32,5 @@ urlpatterns = [
     path('<int:hashtag_id>/search/',blog.views.search, name ='search'),
     path('account/', include('account.urls')),
     path('like/', blog.views.video_like, name='video_like'),
+    path('urls/', include('blog.urls')),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
