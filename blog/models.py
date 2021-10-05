@@ -9,7 +9,14 @@ class Blog(models.Model): #클래스 Blog 선언
     content = models.TextField() # 내용을 model의 textfield를 이용하여 받는다. 글자제한 x
     hashtags = models.ManyToManyField('Hashtag', blank=True)
     image = models.ImageField(upload_to='images/', blank = True)
-
+    likes_user = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank = True,
+        related_name = 'likes_user'
+    )
+    def count_likes_user(self):
+        return self.likes_user.count()
+        
     def __str__(self): #함수 __str__선언
         return self.title # 게시물의 제목을 입력한대로 반환한다.
 

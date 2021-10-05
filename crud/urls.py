@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin #django.contrib에서 admin을 불러온다.
-from django.urls import path #django.urls에서 path를 불러온다.
+from django.urls import path#django.urls에서 path를 불러온다.
 import blog.views # blog의 views를 불러온다.
 from django.conf import settings
 from django.conf.urls import include
@@ -31,4 +31,5 @@ urlpatterns = [
     path('hashtag/', blog.views.hashtagform, name='hashtag'),
     path('<int:hashtag_id>/search/',blog.views.search, name ='search'),
     path('account/', include('account.urls')),
+    path('like/', blog.views.video_like, name='video_like'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

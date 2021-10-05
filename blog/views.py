@@ -1,7 +1,11 @@
+import json
 from django.shortcuts import render ,redirect, get_object_or_404 #django.shortcuts에서 기능들을 이용할 수 있도록 render,redirect,get_object_or_404를 불러온다. 
 from .models import Blog,Hashtag #.models에서 Blog를 불러온다.
 from .forms import PostForm,CommentForm,HashtagForm #.forms에서 PostForm을 불러온다.
 from django.utils import timezone #시간을 이용하기 위해 django.utils에서 timezone을 불러온다.
+from django.http import request,HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 def base(request): #함수 base를 선언
@@ -86,3 +90,20 @@ def create(request, blog=None):
 def search(request, hashtag_id):
     hashtag = get_object_or_404(Hashtag, pk=hashtag_id)
     return render(request, 'blog/search.html', {'hashtag':hashtag})
+
+@login_required
+@require_POST
+def video_like(request):
+    pk = request.POST.get('pk',None)
+    video = get_object_or_404(Blog, pk=pk)
+    user = request.user
+
+    if video.likes_user.filter(id=user.id).exists():
+        video.likes_user.remove(user)
+        message = '좋아요 취소'
+    else:
+        video.likes_user.add(user)
+        message = '좋아요'
+    
+    context = {'likes_count': video.count_likes_user(), 'message': message}
+    return HttpResponse(json.dumps(context), content_type="application/json")
